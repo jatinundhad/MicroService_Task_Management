@@ -12,7 +12,7 @@ app.post('/addtask', (req, res) => {
     try {
         const new_task = new Task({ title, description, duedate });
         new_task.save();
-        res.send("Task Created Successfully");
+        res.status(201).json({ message: "Task added successfully" });
     } catch (err) { 
         console.log(err);
         res.status(500).send('err' + err);

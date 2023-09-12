@@ -12,4 +12,8 @@ print(db)
 cursorObject = db.cursor()
 
 # creating database
-cursorObject.execute("CREATE DATABASE user")
+cursorObject.execute("CREATE DATABASE IF NOT EXISTS user")
+cursorObject.execute("USE user")
+cursorObject.execute("CREATE TABLE IF NOT EXISTS USERS (id INTEGER PRIMARY KEY,\
+                     NAME VARCHAR(255) NOT NULL)")
+
