@@ -3,17 +3,24 @@ import mysql.connector
 db = mysql.connector.connect(
   host="localhost",
   user="root",
-  password="vishv"
+  password="vishv",
+  database="user"
 )
 
-print(db)
 
 # preparing a cursor object
-cursorObject = db.cursor()
+cursor = db.cursor()
 
 # creating database
-cursorObject.execute("CREATE DATABASE IF NOT EXISTS user")
-cursorObject.execute("USE user")
-cursorObject.execute("CREATE TABLE IF NOT EXISTS USERS (id INTEGER PRIMARY KEY,\
-                     NAME VARCHAR(255) NOT NULL)")
-
+# cursor.execute("CREATE DATABASE IF NOT EXISTS USER")
+# cursor.execute("USE user")
+# cursor.execute("""CREATE TABLE IF NOT EXISTS USERS (
+#   id INT NOT NULL AUTO_INCREMENT,
+#   username VARCHAR(255) NOT NULL UNIQUE,
+#   password VARCHAR(255) NOT NULL,
+#   email VARCHAR(255) NOT NULL UNIQUE,
+#   first_name VARCHAR(255) NOT NULL,
+#   last_name VARCHAR(255) NOT NULL,
+#   created_at DATETIME NOT NULL,
+#   PRIMARY KEY (id)
+# );""")

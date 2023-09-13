@@ -1,32 +1,32 @@
-from flask import Flask, request
-import database.conn
+from flask import Flask, request ,jsonify
+from database.conn import cursor,db
+import mysql.connector
+from flask_cors import CORS
 
 app = Flask(__name__)
-cursorObject = database.conn.cursorObject
+CORS(app, resources={r"/*": {"origins": "http://localhost:5000"}})
 
-@app.route('/adduser', methods=['POST'])
-def addUser():
+@app.route('/user/register', methods=['POST'])
+def register_user():
     data = request.get_json()
+    username = data['username']
+    password = data['password']
+    email = data['email']
+    first_name = data['first_name']
+    last_name = data['last_name']
 
-    if 'id' in data and 'name' in data:
-        user_id = data['id']
-        user_name = data['name']
-
-        # Use parameterized queries to prevent SQL injection
-        query = "INSERT INTO USERS (id, name) VALUES (%s, %s)"
-        values = (user_id, user_name)
-
-        try:
-            cursorObject.execute(query, values)
-            database.conn.db.commit()
-            print("Creation of a new user")
-            return "User created successfully"
-        except Exception as e:
-            print("Error creating user:", e)
-            database.conn.db.rollback()
-            return "Error creating user", 500
-    else:
-        return "Invalid JSON data", 400
+    try:
+        cursor.execute("""
+            INSERT INTO users (username, password, email, first_name, last_name, created_at)
+            VALUES (%s, %s, %s, %s, %s, NOW())
+        """, (username, password, email, first_name, last_name))
+        db.commit()
+        return jsonify({"message": "User registered successfully"}), 201
+    except mysql.connector.Error as err:
+        db.rollback()
+        return jsonify({"error": f"Error: {err}"}), 500
+    finally:
+        cursor.close()
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5002)
