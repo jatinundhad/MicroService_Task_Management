@@ -2,8 +2,7 @@ import jwt  from "jsonwebtoken";
 const secretKey = "vishv123";
 
 const authenticateJWT = (req, res, next) => {
-  const token = req.header("x-auth-token"); // Assumes token is sent in the 'x-auth-token' header
-
+  const token = req.header("authorization"); 
   if (!token) {
     return res
       .status(401)
@@ -18,6 +17,7 @@ const authenticateJWT = (req, res, next) => {
     }
 
     req.user = decoded.user; // Attach the decoded user data to the request
+    console.log(req.user);
     next();
   });
 };

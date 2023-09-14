@@ -1,26 +1,23 @@
 import express from "express";
 import "./database/conn.js";
 import Task from "./model/taskModel.js";
+import cors from "cors";
 
 const app = express();
 const PORT = 5001;
 
 app.use(express.json());
+app.use(cors());
 
-app.get("/api/api2", (req, res) => { 
-  console.log("taesek")
-})
-
-app.get("/*", (req, res) => { 
-  console.log(req.url)
-  console.log("rceived");
-})
+app.get("/test", (req, res) => {
+  res.send("Response from Service 1");
+});
 
 
-app.post("/task/addtask", async (req, res) => {
-  const { title, description, duedate, status } = req.body;
-
+// Corrected route handler for POST requests
+app.post("/addtask", async (req, res) => {
   try {
+    const { title, description,duedate,status } = req.body;
     const newTask = await Task.create({ title, description, duedate });
     res.status(201).json({ message: "Task added successfully", task: newTask });
   } catch (err) {
@@ -32,3 +29,5 @@ app.post("/task/addtask", async (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+
+export default app;
