@@ -9,6 +9,7 @@ app.use(express.json());
 // Define routes and their target URLs
 const routes = {
   "/task": "http://localhost:5001",
+  "/team": "http://localhost:5002"
 };
 
 // restream parsed body before proxying
@@ -32,12 +33,11 @@ for (const route in routes) {
   });
   app.use(
     route,
-    authenticateJWT,
     createProxyMiddleware({
       target,
       changeOrigin: true,
       pathRewrite: {
-        [`^/task`]: "",
+        [`^/team`]: "",
       },
       onProxyReq: restream
     })
@@ -46,7 +46,6 @@ for (const route in routes) {
 
 // Apply JWT authentication middleware before proxy routes
 app.use("/auth", authRoutes);
-
 
 const PORT = 5000;
 app.listen(PORT, () => console.log("API GATEWAY STARTED"));
