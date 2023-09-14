@@ -10,12 +10,14 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/test", (req, res) => {
+  console.log("called get")
   res.send("Response from Service 1");
 });
 
 
 // Corrected route handler for POST requests
 app.post("/addtask", async (req, res) => {
+  console.log("called post")
   try {
     const { title, description,duedate,status } = req.body;
     const newTask = await Task.create({ title, description, duedate });

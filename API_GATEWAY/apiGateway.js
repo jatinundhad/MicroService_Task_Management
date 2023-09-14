@@ -1,7 +1,7 @@
 import express from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
-import authenticateJWT from "./middlewares/authenticateJWT.js";
-import authRoutes from "./routes/authRoutes.js";
+import authenticateJWT from "./auth/middlewares/authenticateJWT.js";
+import authRoutes from "./auth/routes/authRoutes.js";
 
 const app = express();
 app.use(express.json());
