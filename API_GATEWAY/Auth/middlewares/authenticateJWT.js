@@ -17,7 +17,6 @@ const authenticateJWT = (req, res, next) => {
     }
 
     req.user = decoded.user; // Attach the decoded user data to the request
-    console.log(req.user);
     next();
   });
 };

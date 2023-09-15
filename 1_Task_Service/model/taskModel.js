@@ -8,10 +8,8 @@ const taskSchema = new mongoose.Schema({
     type: String,
     default: false,
   },
-  //   assignee: {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "User", // Reference to the User collection
-  //   },
+  assignee: String,
+  assigner : String
 });
 
 const Task = mongoose.model("Task", taskSchema);

@@ -2,9 +2,22 @@ import express from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import authenticateJWT from "./auth/middlewares/authenticateJWT.js";
 import authRoutes from "./auth/routes/authRoutes.js";
+import morgan from "morgan";
+import chalk from "chalk";
 
 const app = express();
 app.use(express.json());
+app.use(
+  morgan(function (tokens, req, res) {
+    return (
+      chalk.green(tokens.method(req, res)) +
+      " " +
+      chalk.blue(tokens.url(req, res)) +
+      " " +
+      chalk.green(tokens.status(req, res))
+    );
+  })
+);
 
 // Define routes and their target URLs
 const routes = {
@@ -33,6 +46,7 @@ for (const route in routes) {
   });
   app.use(
     route,
+    authenticateJWT,
     createProxyMiddleware({
       target,
       changeOrigin: true,
@@ -45,7 +59,7 @@ for (const route in routes) {
 }
 
 // Apply JWT authentication middleware before proxy routes
-app.use("/auth", authRoutes);
+app.use("/auth" ,authRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => console.log("API GATEWAY STARTED"));

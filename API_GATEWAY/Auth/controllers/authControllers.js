@@ -55,3 +55,20 @@ export const loginController = async (req, res) => {
     }
   });
 };
+
+export const searchuserController = (req, res) => { 
+  const { username } = req.params;
+  const query = `SELECT * FROM USERS WHERE username = ?`;
+  db.query(query, [username], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    if (results.length === 0) {
+      return res
+        .status(401)
+        .json({ error: "User not found." });
+    } 
+    res.status(200).json({ success : true , message : "Authentication Successful" });
+  })
+}
