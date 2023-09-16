@@ -12,7 +12,7 @@ cursor.executescript('''
         description TEXT,
         leader_id VARCHAR(255),
         creation_date DATE,
-        status TEXT CHECK (status IN ('active', 'inactive', 'archived')) DEFAULT 'active'
+        status TEXT CHECK (status IN ('active', 'inactive')) DEFAULT 'active'
     );
 
     CREATE TABLE IF NOT EXISTS team_members (

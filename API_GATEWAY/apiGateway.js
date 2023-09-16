@@ -62,4 +62,4 @@ for (const route in routes) {
 app.use("/auth" ,authRoutes);
 
 const PORT = 5000;
-app.listen(PORT, () => console.log("API GATEWAY STARTED"));
+app.listen(PORT, () => console.log("API GATEWAY STARTED ON " + PORT));

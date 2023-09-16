@@ -84,17 +84,24 @@ def get_teams():
     except Exception as e:
         return jsonify({'error': str(e)}) , 500
 
-@app.route('/check_lead/<lead>',methods=['GET'])
-def check_lead(lead):
+@app.route('/checkValidity',methods=['POST'])
+def check_lead():
+    team_id = request.json["team_id"]
+    assigner = request.json["assigner"]
+    assignee = request.json["assignee"]
+    
     try:
-        cursor.execute('SELECT COUNT(*) FROM TEAMS WHERE LEADER_ID = ? ',(lead,))
+        cursor.execute('SELECT COUNT(*) FROM TEAMS A INNER JOIN TEAM_MEMBERS B ON A.TEAM_ID=B.TEAM_ID WHERE A.TEAM_ID=? AND STATUS="active" AND LEADER_ID=? AND MEMBER_ID=?', (team_id, assigner, assignee))
         count = cursor.fetchone()[0]
+        
         if count < 1:
-            return jsonify({'error': 'Leader not exists'}), 401
+            return jsonify({'error': 'NO Previllige to assign Task'}), 401
         return jsonify({'success': True}),200
     except Exception as e:
+        print(e)
         return jsonify({'error': str(e)}) , 500
     
 
 if __name__ == '__main__':
+    print("Listening on 5002")
     app.run(debug=True, port=5002)

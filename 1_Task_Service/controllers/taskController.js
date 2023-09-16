@@ -4,8 +4,19 @@ import axios from "axios";
 
 export const addtaskController = async (req, res) => {
   try {
-    const { title, description, duedate, status, assignee, assigner } =
-      req.body;
+    // getting the task attributes
+    const {
+      title,
+      description,
+      duedate,
+      priority,
+      status,
+      assignee,
+      assigner,
+      notifications,
+      tags,
+      team_id,
+    } = req.body;
 
     let assigneeError, assignerError, privilegeError;
 
@@ -25,13 +36,17 @@ export const addtaskController = async (req, res) => {
         }
       });
 
-    await axios
-      .get("http://localhost:5002/check_lead/" + assigner)
-      .catch((err) => {
-        if (err.response.status == 401) {
-          privilegeError = "Assigner has no Privilege to assign tasks";
-        }
-      });
+    let requestBody = {
+      assignee: assignee,
+      assigner: assigner,
+      team_id: team_id,
+    };
+
+    await axios.post("http://localhost:5002/checkValidity", requestBody).catch((err) => {
+      if (err.response.status == 401) {
+        privilegeError = err.response.message;
+      }
+    });
 
     if (assigneeError) {
       return res.status(400).json({ message: assigneeError });
@@ -51,7 +66,7 @@ export const addtaskController = async (req, res) => {
       });
     }
 
-    const newTask = await Task.create({ title, description, duedate });
+    const newTask = await Task.create({ title, description, duedate , priority ,status ,assignee,assigner,notifications,tags,team_id });
     return res
       .status(201)
       .json({ message: "Task added successfully", task: newTask });
