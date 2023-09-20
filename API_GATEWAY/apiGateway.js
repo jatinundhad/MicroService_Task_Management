@@ -4,9 +4,11 @@ import authenticateJWT from "./auth/middlewares/authenticateJWT.js";
 import authRoutes from "./auth/routes/authRoutes.js";
 import morgan from "morgan";
 import chalk from "chalk";
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use(
   morgan(function (tokens, req, res) {
     return (
