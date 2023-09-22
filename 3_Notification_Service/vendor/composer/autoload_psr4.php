@@ -17,4 +17,5 @@ return array(
     'Predis\\' => array($vendorDir . '/predis/predis/src'),
     'Fig\\Http\\Message\\' => array($vendorDir . '/fig/http-message-util/src'),
     'FastRoute\\' => array($vendorDir . '/nikic/fast-route/src'),
+    'App\\' => array($baseDir . '/src'),
 );
