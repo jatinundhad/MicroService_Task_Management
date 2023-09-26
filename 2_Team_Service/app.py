@@ -101,6 +101,12 @@ def check_lead():
         print(e)
         return jsonify({'error': str(e)}) , 500
     
+@app.route('/test',methods=['GET'])
+def test():
+    r=requests.get('http://localhost:5003/')
+    print(r)
+    return "r",200
+    
 
 if __name__ == '__main__':
     print("Listening on 5002")

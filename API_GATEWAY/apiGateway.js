@@ -24,7 +24,8 @@ app.use(
 // Define routes and their target URLs
 const routes = {
   "/task": "http://localhost:5001",
-  "/team": "http://localhost:5002"
+  "/team": "http://localhost:5002",
+  "/notification":"http://localhost:5003",
 };
 
 // restream parsed body before proxying
@@ -54,6 +55,7 @@ for (const route in routes) {
       changeOrigin: true,
       pathRewrite: {
         [`^/team`]: "",
+        ['^/notification']:""
       },
       onProxyReq: restream
     })

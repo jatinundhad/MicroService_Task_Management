@@ -4,15 +4,25 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit6c8ff6ccf4cbe1cea5b4c9bdf5d5472e
+class ComposerStaticInite8612fd33ba80d9aefc109ac6f0d79e5
 {
     public static $files = array (
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
+        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'p' => 
+        array (
+            'phpseclib3\\' => 11,
+        ),
+        'T' => 
+        array (
+            'Tuupola\\Middleware\\' => 19,
+            'Tuupola\\Http\\Factory\\' => 21,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
@@ -27,6 +37,13 @@ class ComposerStaticInit6c8ff6ccf4cbe1cea5b4c9bdf5d5472e
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
             'Predis\\' => 7,
+            'PhpAmqpLib\\' => 11,
+            'ParagonIE\\ConstantTime\\' => 23,
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
+        'N' => 
+        array (
+            'Neomerx\\Cors\\' => 13,
         ),
         'F' => 
         array (
@@ -40,6 +57,19 @@ class ComposerStaticInit6c8ff6ccf4cbe1cea5b4c9bdf5d5472e
     );
 
     public static $prefixDirsPsr4 = array (
+        'phpseclib3\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
+        'Tuupola\\Middleware\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tuupola/callable-handler/src',
+            1 => __DIR__ . '/..' . '/tuupola/cors-middleware/src',
+        ),
+        'Tuupola\\Http\\Factory\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tuupola/http-factory/src',
+        ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
@@ -67,8 +97,8 @@ class ComposerStaticInit6c8ff6ccf4cbe1cea5b4c9bdf5d5472e
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Container\\' => 
         array (
@@ -77,6 +107,22 @@ class ComposerStaticInit6c8ff6ccf4cbe1cea5b4c9bdf5d5472e
         'Predis\\' => 
         array (
             0 => __DIR__ . '/..' . '/predis/predis/src',
+        ),
+        'PhpAmqpLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-amqplib/php-amqplib/PhpAmqpLib',
+        ),
+        'ParagonIE\\ConstantTime\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'Neomerx\\Cors\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/neomerx/cors-psr7/src',
         ),
         'Fig\\Http\\Message\\' => 
         array (
@@ -104,9 +150,9 @@ class ComposerStaticInit6c8ff6ccf4cbe1cea5b4c9bdf5d5472e
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit6c8ff6ccf4cbe1cea5b4c9bdf5d5472e::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit6c8ff6ccf4cbe1cea5b4c9bdf5d5472e::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit6c8ff6ccf4cbe1cea5b4c9bdf5d5472e::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite8612fd33ba80d9aefc109ac6f0d79e5::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite8612fd33ba80d9aefc109ac6f0d79e5::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInite8612fd33ba80d9aefc109ac6f0d79e5::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -42,34 +42,54 @@ export const addtaskController = async (req, res) => {
       team_id: team_id,
     };
 
-    await axios.post("http://localhost:5002/checkValidity", requestBody).catch((err) => {
-      if (err.response.status == 401) {
-        privilegeError = err.response.message;
-      }
+    // await axios
+    //   .post("http://localhost:5002/checkValidity", requestBody)
+    //   .catch((err) => {
+    //     if (err.response.status == 401) {
+    //       privilegeError = err.response.message;
+    //     }
+    //   });
+
+    // if (assigneeError) {
+    //   return res.status(400).json({ message: assigneeError });
+    // }
+
+    // if (assignerError) {
+    //   return res.status(400).json({ message: assignerError });
+    // }
+
+    // if (privilegeError) {
+    //   return res.status(400).json({ message: privilegeError });
+    // }
+
+    // if (assignee == assigner) {
+    //   return res.status(400).json({
+    //     message: "Assigner and Assignee Must be different",
+    //   });
+    // }
+
+    const newTask = await Task.create({
+      title,
+      description,
+      duedate,
+      priority,
+      status,
+      assignee,
+      assigner,
+      notifications,
+      tags,
+      team_id,
     });
 
-    if (assigneeError) {
-      return res.status(400).json({ message: assigneeError });
-    }
+    await axios.post(
+      "http://localhost:5003/addnotification",
+      req.body
+      );
 
-    if (assignerError) {
-      return res.status(400).json({ message: assignerError });
-    }
 
-    if (privilegeError) {
-      return res.status(400).json({ message: privilegeError });
-    }
-
-    if (assignee == assigner) {
-      return res.status(400).json({
-        message: "Assigner and Assignee Must be different",
-      });
-    }
-
-    const newTask = await Task.create({ title, description, duedate , priority ,status ,assignee,assigner,notifications,tags,team_id });
     return res
       .status(201)
-      .json({ message: "Task added successfully", task: newTask });
+      .json({ message: "Task added and Notified successfully", task: newTask });
   } catch (err) {
     console.error(err);
     return res
