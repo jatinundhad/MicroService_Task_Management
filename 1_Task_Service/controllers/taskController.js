@@ -81,7 +81,7 @@ export const addtaskController = async (req, res) => {
       team_id,
     });
 
-    await axios.post(
+    axios.post(
       "http://localhost:5003/addnotification",
       req.body
       );
