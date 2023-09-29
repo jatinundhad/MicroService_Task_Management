@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: vishv
+      MYSQL_DATABASE: user
+    ports:
+      - 3306:3306
+    volumes:
+      - my-datavolume:/var/lib/mysql
+    container_name: mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 4000:8080
+    container_name: mysqladmin
+
+  apigateway:
+    depends_on:
+      - mysqldb
+    build: ./API_GATEWAY
+    ports:
+      - 5000:5000
+    container_name: apigateway
+  
+  taskservice:
+    depends_on:
+      - mongo
+    build: ./1_Task_Service
+    ports:
+      - 5001:5001
+    container_name: taskservice
+  
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+    container_name: mongo
+  
+  mongo-express:
+    image: mongo-express
+    restart: always
+    container_name: mongodbadmin
+    environment:
+      -ME_CONFIG_MONGODB_SERVER: mongodb
+      -ME_CONFIG_MONGODB_PORT: 27017
+      -ME_CONFIG_BASICAUTH_USERNAME: root
+      -ME_CONFIG_BASICAUTH_PASSWORD: vishv
+    ports:
+      - 8081:8081
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  my-datavolume:
+  mongo-data:

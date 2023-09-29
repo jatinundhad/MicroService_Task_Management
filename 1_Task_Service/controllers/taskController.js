@@ -20,27 +20,27 @@ export const addtaskController = async (req, res) => {
 
     let assigneeError, assignerError, privilegeError;
 
-    await axios
-      .get("http://localhost:5000/auth/search/" + assignee)
-      .catch((err) => {
-        if (err.response.status == 401) {
-          assigneeError = "No such Assignee Found";
-        }
-      });
+    // await axios
+    //   .get("http://localhost:5000/auth/search/" + assignee)
+    //   .catch((err) => {
+    //     if (err.response.status == 401) {
+    //       assigneeError = "No such Assignee Found";
+    //     }
+    //   });
 
-    await axios
-      .get("http://localhost:5000/auth/search/" + assigner)
-      .catch((err) => {
-        if (err.response.status == 401) {
-          assignerError = "No Such Assigner Found";
-        }
-      });
+    // await axios
+    //   .get("http://localhost:5000/auth/search/" + assigner)
+    //   .catch((err) => {
+    //     if (err.response.status == 401) {
+    //       assignerError = "No Such Assigner Found";
+    //     }
+    //   });
 
-    let requestBody = {
-      assignee: assignee,
-      assigner: assigner,
-      team_id: team_id,
-    };
+    // let requestBody = {
+    //   assignee: assignee,
+    //   assigner: assigner,
+    //   team_id: team_id,
+    // };
 
     // await axios
     //   .post("http://localhost:5002/checkValidity", requestBody)
@@ -81,10 +81,10 @@ export const addtaskController = async (req, res) => {
       team_id,
     });
 
-    axios.post(
-      "http://localhost:5003/addnotification",
-      req.body
-      );
+    // axios.post(
+    //   "http://localhost:5003/addnotification",
+    //   req.body
+    //   );
 
 
     return res

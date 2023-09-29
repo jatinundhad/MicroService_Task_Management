@@ -1,7 +1,7 @@
 import express from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
-import authenticateJWT from "./auth/middlewares/authenticateJWT.js";
-import authRoutes from "./auth/routes/authRoutes.js";
+import authenticateJWT from "./Auth/middlewares/authenticateJWT.js";
+import authRoutes from "./Auth/routes/authRoutes.js";
 import morgan from "morgan";
 import chalk from "chalk";
 import cors from 'cors';
@@ -23,7 +23,7 @@ app.use(
 
 // Define routes and their target URLs
 const routes = {
-  "/task": "http://localhost:5001",
+  "/task": "http://taskservice:5001",
   "/team": "http://localhost:5002",
   "/notification":"http://localhost:5003",
 };

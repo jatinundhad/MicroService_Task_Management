@@ -1,0 +1,11 @@
+FROM node:18
+RUN apt-get update && apt-get install -y git curl libmcrypt-dev default-mysql-client
+WORKDIR /apigateway
+COPY package*.json /apigateway
+RUN npm install
+RUN npm install -g nodemon
+COPY . .
+EXPOSE 5000
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+CMD [ "/start.sh" ]

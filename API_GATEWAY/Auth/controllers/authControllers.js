@@ -10,7 +10,7 @@ export const registerController = async (req, res) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  const sql = `INSERT INTO USERS (username, password, email, first_name, last_name, created_at) VALUES (?, ?, ?, ?, ?, NOW())`;
+  const sql = `INSERT INTO users (username, password, email, first_name, last_name, created_at) VALUES (?, ?, ?, ?, ?, NOW())`;
   const values = [username, hashedPassword, email, first_name, last_name];
 
   db.query(sql, values, (err, result) => {
@@ -29,7 +29,7 @@ export const registerController = async (req, res) => {
 export const loginController = async (req, res) => {
   const { username, password } = req.body;
 
-  const query = `SELECT * FROM USERS WHERE username = ?`;
+  const query = `SELECT * FROM users WHERE username = ?`;
   db.query(query, [username], async (err, results) => {
     if (err) {
       console.error("Database error:", err);
@@ -58,7 +58,7 @@ export const loginController = async (req, res) => {
 
 export const searchuserController = (req, res) => {
   const { username } = req.params;
-  const query = `SELECT * FROM USERS WHERE username = ?`;
+  const query = `SELECT * FROM users WHERE username = ?`;
   db.query(query, [username], (err, results) => {
     if (err) {
       console.error("Database error:", err);

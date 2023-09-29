@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 // Connect to MongoDB
 try {
-    mongoose.connect("mongodb://localhost:27017/task_service", {
+    mongoose.connect("mongodb://mongo:27017/task_service", {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
