@@ -22,8 +22,8 @@ $app->add(function ($request, $handler) {
 // Configure Redis connection
 $redisConfig = [
     'scheme' => 'tcp',
-    'host' => '127.0.0.1', //Redis server IP
-    'port' => 6379,         //Redis server port
+    'host' => 'redis', //Redis server IP
+    'port' => 6379,    //Redis server port
 ];
 
 $redis = new Client($redisConfig);
@@ -43,7 +43,8 @@ $app->post('/addnotification', function ($request, $response, $args) use ($redis
         ];
 
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'http://localhost:5000/auth/search/' . $notification['assignee']);
+    
+    curl_setopt($ch, CURLOPT_URL, 'http://host.docker.internal:5000/auth/search/' . $notification['assignee']);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $res = curl_exec($ch);
     $res = json_decode($res, true);
@@ -51,7 +52,7 @@ $app->post('/addnotification', function ($request, $response, $args) use ($redis
         echo 'cURL error: ' . curl_error($ch);
     }
     echo $res['email'];
-    send_activation_email($res['email']);
+    send_activation_email($res['email'],$data);
     curl_close($ch);
     $due_date = $data['duedate'];
     $notification['email'] = $res['email'];
@@ -76,6 +77,10 @@ $app->get('/getnotifications/{duedate}', function ($request, $response, $args) u
             $decodedData[] = json_decode($notification);
     }
     return $response->withJson($decodedData, 200);
+});
+
+$app->get('/', function ($request, $response) {
+    return "v";
 });
 
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {

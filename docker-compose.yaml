@@ -35,6 +35,26 @@ services:
     ports:
       - 5001:5001
     container_name: taskservice
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+  
+  mailservice:
+    build: ./3_Mail_Service
+    ports:
+      - 5003:5003
+    depends_on:
+      - redis
+    container_name: mailservice
+  
+  teamservice:
+    build : ./2_Team_Service
+    ports:
+      - 5002:5002
+    container_name: teamservice
   
   mongo:
     image: mongo

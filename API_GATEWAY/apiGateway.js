@@ -21,12 +21,14 @@ app.use(
   })
 );
 
+
 // Define routes and their target URLs
 const routes = {
   "/task": "http://taskservice:5001",
-  "/team": "http://localhost:5002",
-  "/notification":"http://localhost:5003",
+  "/team": "http://teamservice:5002",
+  "/notification":"http://mailservice:5003",
 };
+
 
 // restream parsed body before proxying
 var restream = function(proxyReq, req, res, options) {
@@ -63,7 +65,7 @@ for (const route in routes) {
 }
 
 // Apply JWT authentication middleware before proxy routes
-app.use("/auth" ,authRoutes);
+app.use("/auth" , authRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => console.log("API GATEWAY STARTED ON " + PORT));

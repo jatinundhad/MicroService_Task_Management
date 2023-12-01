@@ -1,27 +1,26 @@
 <?php
+
 require_once __DIR__ . '/vendor/autoload.php';
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Message\AMQPMessage;
 
 $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
 $channel = $connection->channel();
 
-
-$channel->queue_declare('hello', false, false, false, false);
+$channel->queue_declare('hello', true, false, false, false);
 
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
-$callback = function ($msg) {
-    echo ' [x] Received ', $msg->body, "\n";
-};
+while (true) {
+    $message = $channel->basic_get('hello', true); // Get a single message and acknowledge it
 
-$channel->basic_consume('hello', '', false, true, false, false, $callback);
+    if ($message) {
+        echo ' [x] Received ', $message->body, "\n";
+    } else {
+        echo " [x] No messages found. Waiting...\n";
+        break;
+    }
+}
 
-// while ($channel->is_open()) {
-    // $channel->wait();
-// }
-?>
+$channel->close();
+$connection->close();

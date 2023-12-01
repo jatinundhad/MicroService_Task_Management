@@ -10,8 +10,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
+    print("f")
     return 'Welcome to the Team Service!'
-
 
 @app.before_request
 def log_request_info():
@@ -26,6 +26,7 @@ def log_response_info(response):
 @app.route('/create_team', methods=['POST'])
 def create_team():
     try:
+        
         team_data = request.json
         cursor.execute('SELECT COUNT(*) FROM teams WHERE team_id = ?', (team_data['team_id'],))
         count = cursor.fetchone()[0]
@@ -33,7 +34,8 @@ def create_team():
             return jsonify({'error': 'Team already exists'}), 400
         
         #check that leader is exists in the table
-        r=requests.get('http://localhost:5000/auth/search/'+team_data['leader_id'])
+        r = requests.get('http://host.docker.internal:5000/auth/search/' +
+                         team_data['leader_id'], verify=False)
         if(r.status_code!=200):
             return jsonify({'error': 'leader not exists'}) , 400
         
@@ -55,7 +57,8 @@ def add_member_to_team():
         member_id = request.json['member_id']
         
         #check member exists in the table
-        r=requests.get('http://localhost:5000/auth/search/'+member_id)
+        r = requests.get(
+            'http://host.docker.internal:5000/auth/search/'+member_id)
         if(r.status_code!=200):
             return jsonify({'error': 'Team Member not exists'}) , 400
        
@@ -103,11 +106,12 @@ def check_lead():
     
 @app.route('/test',methods=['GET'])
 def test():
-    r=requests.get('http://localhost:5003/')
+    r = requests.get('http://host.docker.internal:5003/')
     print(r)
     return "r",200
     
 
 if __name__ == '__main__':
     print("Listening on 5002")
-    app.run(debug=True, port=5002)
+    print(conn)
+    app.run(debug=True, port=5002,host='0.0.0.0')

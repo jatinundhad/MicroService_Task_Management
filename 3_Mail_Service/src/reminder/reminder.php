@@ -3,6 +3,7 @@
 // require_once __DIR__. '../../vendor/autoload.php';
 require_once  '../mail/sendmail.php';
 require_once '../../vendor/autoload.php';
+
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -10,7 +11,7 @@ use Predis\Client;
 // Configure Redis
 $redisConfig = [
     'scheme' => 'tcp',
-    'host' => '127.0.0.1', //Redis server IP
+    'host' => 'redis', //Redis server IP
     'port' => 6379,         //Redis server port
 ];
 
@@ -31,51 +32,55 @@ curl_setopt($ch, CURLOPT_URL, 'http://localhost:5003/getnotifications/' . $tomor
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $res = curl_exec($ch);
 $res = json_decode($res, true);
+var_dump($res);
+
+if ($res == NULL) exit("Exiting the script at this point.");
+
 if (curl_errno($ch)) {
     echo 'cURL error: ' . curl_error($ch);
 }
-// var_dump($res);
+
+$data = [];
+$data["title"] = "Reminder For Your Task";
+$data["description"] = "Already given to you";
+$data["priority"] = "urgent Basis";
+$data["assigner"] = "By Admin";
+$data["duedate"] = $tomorrowDate;
+$data["tags"] = [];
+
 foreach ($res as $notification) {
     $emailData = [
         'to' => $notification['email'],
         'subject' => 'Task',
         'message' => 'This is a test email message.',
     ];
-    // Convert email data to JSON
+
     $messageBody = json_encode($emailData);
-    // Create a message
+
     $message = new AMQPMessage($messageBody);
 
-    // Publish the message to the queue
     $channel->basic_publish($message, '', 'email');
-    echo $emailData['to']." Sent email request\n";
-    // send_activation_email($notification['email']);
+    echo $emailData['to'] . " Sent email request\n";
+    send_activation_email($notification['email'], $data);
 }
 curl_close($ch);
 echo " [*] Waiting for email requests. To exit, press CTRL+C\n";
 
-// Callback function to handle incoming messages
 $callback = function ($message) {
     $emailData = json_decode($message->body, true);
 
-    // Send the email using a library like PHPMailer or your email service of choice
     $to = $emailData['to'];
     $subject = $emailData['subject'];
     $message = $emailData['message'];
-    send_activation_email($to);
+    send_activation_email($to, "");
     echo " [x] Email sent to $to\n";
 };
 
-// Set the callback function for incoming messages
 $channel->basic_consume('email', '', false, false, false, false, $callback);
 
-// Keep the consumer running
 while (count($channel->callbacks)) {
     $channel->wait();
 }
 
-// Close the channel and the connection
 $channel->close();
 $connection->close();
-
-?>
